@@ -1,0 +1,121 @@
+﻿@using Transact_Mvc.Database
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var balance = user != null ? user.Balance : 0.0;
+    @inject TransactContext _context;
+    var bankDeposit = _context.Bank.FirstOrDefault(bank => bank.UserName == user.UserName)?.Balance ?? 0.0;
+}
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+    @if (hasExternalLogins)
+    {
+        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+    }
+    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
+   
+<form asp-controller="MoneyTransfer" asp-action="MoneyTransfer" method="get">
+    <button type="submit">Money Transfer</button>
+</form>
+
+    <H4 id="yourActiveBalance">Your active balance: @balance Gel.</H4>
+    <H4 id="yourDeposit">Your deposit: @bankDeposit Gel.</H4>
+    <div>
+        <p></p>
+    </div>
+    <h2>Bank Operations</h2>
+
+    <form asp-action="Deposit" asp-controller="BankOperations" method="post">
+        <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
+        <input type="number" name="amount" placeholder="Enter deposit amount:" required />
+        <button type="submit">Deposit</button>
+    </form>
+
+    <form asp-action="Withdraw" asp-controller="BankOperations" method="post">
+        <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
+        <input type="number" name="amount" placeholder="Enter withdraw amount:" required />
+        <button type="submit">Withdraw</button>
+    </form>
+
+</ul>
+<style>
+    form[action="/MoneyTransfer/MoneyTransfer"] button {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        form[action="/MoneyTransfer/MoneyTransfer"] button:hover {
+            background-color: #218838;
+        }
+</style>
+
+<style>
+
+    form[action="/MoneyTransfer/MoneyTransfer"] button {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        form[action="/MoneyTransfer/MoneyTransfer"] button:hover {
+            background-color: #218838;
+        }
+
+    form[action="/BankOperations/Deposit"] button,
+    form[action="/BankOperations/Withdraw"] button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        form[action="/BankOperations/Deposit"] button:hover,
+        form[action="/BankOperations/Withdraw"] button:hover {
+            background-color: #0056b3;
+        }
+
+    form[action="/BankOperations/Deposit"],
+    form[action="/BankOperations/Withdraw"] {
+        margin-top: 15px;
+    }
+</style>
+
+<style>
+
+    h4 {
+        color: #007bff;
+        margin-bottom: 10px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #yourActiveBalance {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #yourDeposit {
+        font-size: 18px;
+        font-weight: 500;
+    }
+</style>
+    </style>
+

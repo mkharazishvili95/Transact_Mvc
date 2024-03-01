@@ -1,0 +1,97 @@
+﻿@model Transact_Mvc.Models.MoneyTransferModel
+@{
+    ViewData["Title"] = "Money Transfer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Money Transfer</h1>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style="color: red;">@ViewBag.ErrorMessage</p>
+}
+
+<form id="moneyTransferForm" method="post" class="money-transfer-form">
+    <div class="form-group">
+        <label for="Amount">Enter amount:</label>
+        <input type="number" id="Amount" name="Amount" required class="form-control" />
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="RecipientUsername">Enter recipient username:</label>
+        <input type="text" id="RecipientUsername" name="RecipientUsername" required class="form-control" />
+        <span class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Transfer Money</button>
+</form>
+
+<div id="resultMessage"></div>
+
+@section scripts {
+    <script>
+        $(function () {
+            $('#moneyTransferForm').submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '@Url.Action("MoneyTransfer", "MoneyTransfer")',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.success) {
+                            $('#resultMessage').html('<div class="alert alert-success">' + result.message + '</div>');
+                        } else {
+                            $('#resultMessage').html('<div class="alert alert-danger">' + result.message + '</div>');
+                        }
+                    },
+                    error: function () {
+                        $('#resultMessage').html('<div class="alert alert-danger">An error occurred while processing your request.</div>');
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
+<style>
+    .money-transfer-form {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-top: 50px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .text-danger {
+        color: red;
+    }
+</style>

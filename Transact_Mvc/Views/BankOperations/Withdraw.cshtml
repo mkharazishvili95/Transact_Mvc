@@ -1,0 +1,49 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@model Transact_Mvc.Views.BankOperations.WithdrawModel
+@inject UserManager<User> UserManager
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Withdraw</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Withdraw</h1>
+    <p>Welcome, "@UserManager.GetUserName(User)"!</p>
+
+    <form id="withdrawForm">
+        <div>
+            <label for="amount">Withdraw Amount:</label>
+            <input type="number" id="amount" name="amount" required />
+        </div>
+        <input type="hidden" id="userId" name="userId" value="@UserManager.GetUserId(User)" />
+        <button type="button" id="withdrawBtn">Withdraw</button>
+    </form>
+
+    <div id="withdrawResult"></div>
+
+    <script>
+        $(document).ready(function () {
+            $("#withdrawBtn").click(function () {
+                var amount = $("#amount").val();
+                var userId = $("#userId").val();
+
+                $.ajax({
+                    url: "/BankOperations/Withdraw",
+                    type: "POST",
+                    data: JSON.stringify({ amount: amount, userId: userId }),
+                    contentType: "application/json",
+                    success: function (data) {
+                        $("#withdrawResult").text(data.message);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

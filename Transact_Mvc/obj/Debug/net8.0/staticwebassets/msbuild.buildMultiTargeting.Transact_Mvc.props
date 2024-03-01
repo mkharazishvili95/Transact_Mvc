@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Transact_Mvc.props" />
+</Project>

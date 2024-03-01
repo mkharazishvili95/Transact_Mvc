@@ -1,0 +1,18 @@
+﻿@model Transact_Mvc.Models.DepositFail
+
+@{
+    ViewData["Title"] = "Deposit Failed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="failMessage">Deposit Failed!</h1>
+
+<p>@Model.DepositFailMessage</p>
+
+<style>
+    .failMessage {
+        color: red;
+    }
+</style>
+
+<p>Go back to your cabinet: <a href="~/Identity/Account/Manage">User Cabinet</a></p>

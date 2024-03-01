@@ -1,0 +1,18 @@
+﻿@model Transact_Mvc.Models.WithdrawFail
+
+@{
+    ViewData["Title"] = "Withdraw Failed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="failMessage">Withdraw Failed!</h1>
+
+<p>@Model.WithdrawFailMessage</p>
+
+<style>
+    .failMessage {
+        color: red;
+    }
+</style>
+
+<p>Go back to your cabinet: <a href="~/Identity/Account/Manage">User Cabinet</a></p>

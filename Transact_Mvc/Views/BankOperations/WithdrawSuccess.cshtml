@@ -1,0 +1,25 @@
+﻿@model Transact_Mvc.Models.WithdrawSuccessViewModel
+@{
+    ViewData["Title"] = "Withdraw Success";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="successMessage">Withdraw Successful!</h1>
+
+@if (Model != null)
+{
+    <p>Success message: @Model.SuccessMessage</p>
+}
+else
+{
+    <p>Error: Model is null.</p>
+}
+<style>
+    .successMessage {
+        color: green;
+    }
+</style>
+
+<p class="successMessage">Your withdraw has been successfully processed.</p>
+<p>Any additional information or success message can be displayed here.</p>
+<p>Go back to your cabinet: <a href="~/Identity/Account/Manage">User Cabinet</a></p>

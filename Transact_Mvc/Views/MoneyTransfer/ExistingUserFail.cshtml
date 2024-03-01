@@ -1,0 +1,18 @@
+﻿@model Transact_Mvc.Models.ExistingUserFail
+
+@{
+    ViewData["Title"] = "Recipient User Failed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="failMessage">Transfer Failed!</h1>
+
+<p>@Model.FailMessage</p>
+
+<style>
+    .failMessage {
+        color: red;
+    }
+</style>
+
+<p>Go back: <a href="~/MoneyTransfer/MoneyTransfer">Back to Money transfer page</a></p>
